@@ -1,0 +1,134 @@
+{
+	"name": "bbmsg",
+	"version": "3.1.55",
+	"productName": "BlueBird Messenger",
+	"description": "",
+	"main": "src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"deploy:win": "electron-builder build --win --publish always",
+		"deploy:mac": "electron-builder build --mac --publish always",
+		"deploy:universal": "electron-builder build --universal --publish always",
+		"build:win32": "electron-builder --win --ia32",
+		"build:win64": "electron-builder --win --x64",
+		"build:win": "electron-builder --win",
+		"build:mac": "electron-builder --mac",
+		"build:universal": "electron-builder --universal",
+		"build:linux32": "build --linux --ia32",
+		"build:linux64": "build --linux --x64"
+	},
+	"build": {
+		"appId": "com.hnpsoft.www",
+		"productName": "BlueBird Messenger",
+		"files": [
+			{
+				"from": "build/src",
+				"to": "src"
+			},
+			"package.json"
+		],
+		"afterPack": "build/afterPack.js",
+		"afterSign": "build/notarize.js",
+		"mac": {
+			"type": "distribution",
+			"hardenedRuntime": true,
+			"gatekeeperAssess": false,
+			"entitlements": "build/entitlements.mac.plist",
+			"provisioningProfile": "build/embedded.provisionprofile",
+			"target": {
+				"target": "default",
+				"arch": [
+					"x64",
+					"arm64"
+				]
+			},
+			"electronLanguages": [
+				"ko",
+				"en",
+				"zh_CN",
+				"ja",
+				"vi"
+			],
+			"publish": [
+				{
+					"provider": "github",
+					"owner": "bbgroupware",
+					"repo": "bbmsg_mac"
+				}
+			],
+			"icon": "./xbbMsg.ico",
+			"extraResources": []
+		},
+		"dmg": {
+			"title": "BlueBird Messenger",
+			"icon": "./xbbMsg.ico",
+			"sign": false
+		},
+		"win": {
+			"target": [
+				"nsis"
+			],
+			"certificateFile": "hnpsoft_com_cert.pfx",
+			"certificatePassword": "hnp88soft32",
+			"publish": [
+				{
+					"provider": "github",
+					"owner": "bbgroupware",
+					"repo": "bbmsg_win_test"
+				}
+			],
+			"icon": "./xbbMsg.ico",
+			"extraResources": [
+				{
+					"from": "./xbbMsg.ico",
+					"to": "../"
+				}
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage",
+				"deb",
+				"rpm",
+				"zip",
+				"tar.gz"
+			],
+			"icon": "./xbbMsg.ico"
+		},
+		"nsis": {
+			"oneClick": true,
+			"allowToChangeInstallationDirectory": false,
+			"createDesktopShortcut": true,
+			"perMachine": true,
+			"include": "build/installer.nsh",
+			"installerIcon": "./xbbMsg.ico",
+			"shortcutName": "BlueBird Messenger",
+			"artifactName": "BlueBird Messenger-${version}.${ext}",
+			"uninstallDisplayName": "BlueBird Messenger",
+			"deleteAppDataOnUninstall": true
+		},
+		"directories": {
+			"buildResources": ".",
+			"output": "./dist/"
+		}
+	},
+	"author": "hnpsoft",
+	"license": "ISC",
+	"private": true,
+	"devDependencies": {
+		"electron": "^24.0.0",
+		"electron-builder": "^24.13.0",
+		"electron-notarize": "^1.2.2"
+	},
+	"dependencies": {
+		"@paymoapp/electron-shutdown-handler": "^1.1.2",
+		"electron-context-menu": "^3.1.1",
+		"electron-is-dev": "^2.0.0",
+		"electron-updater": "^6.2.1",
+		"hidefile": "^3.0.0",
+		"ini": "^2.0.0",
+		"mailpop3": "^0.1.0",
+		"ssl-root-cas": "^1.3.1",
+		"winattr": "^3.0.0"
+	}
+}
